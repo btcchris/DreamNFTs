@@ -1,39 +1,38 @@
-//SPDX-License-Identifier: MIT
+//SPDX-License-Identifier: MIT 
 
 pragma solidity 0.8.17;
 
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
-import "@openzeppelin/contracts/finance/PaymentSplitter.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol"; 
 
 
-
-contract NFT is ERC721Enumerable, Ownable, ReentrancyGuard {
+contract DreamHollywood is ERC721Enumerable, Ownable, ReentrancyGuard {
   using Strings for uint256;
-
   string public baseURI;
   string public baseExtension = ".json";
   string public notRevealedUri;
   uint256 public cost = 1.5 ether;
   uint256 public maxSupply = 400;
-  uint256 public maxMintAmount = 3;
+  uint256 public maxMintAmount = 5;
   uint256 public nftPerAddressLimit = 3;
   bool public paused = true;
   bool public revealed = false;
   bool public onlyWhitelisted = true;
   address[] public whitelistedAddresses;
+  address payable public payments;
   mapping(address => uint256) public addressMintedBalance;
 
 
-  constructor(
+constructor(
     string memory _name,
     string memory _symbol,
-    string memory _initBaseURI
+    string memory _initBaseURI,
+    address _payments
   ) ERC721(_name, _symbol) {
     setBaseURI(_initBaseURI);
+    payments = payable(_payments);
   }
-
   // internal
   function _baseURI() internal view virtual override returns (string memory) {
     return baseURI;
@@ -149,7 +148,7 @@ contract NFT is ERC721Enumerable, Ownable, ReentrancyGuard {
   }
  
   function withdraw() public payable onlyOwner {
-    (bool os, ) = payable(owner()).call{value: address(this).balance}("");
+    (bool os, ) = payable(payments).call{value: address(this).balance}("");
     require(os);
    
   }
