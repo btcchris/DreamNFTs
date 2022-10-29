@@ -7,15 +7,15 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol"; 
 
 
-contract DreamHollywood is ERC721Enumerable, Ownable, ReentrancyGuard {
+contract dreamNFT is ERC721Enumerable, Ownable, ReentrancyGuard {
   using Strings for uint256;
   string public baseURI;
   string public baseExtension = ".json";
   string public notRevealedUri;
   uint256 public cost = 1.5 ether;
   uint256 public maxSupply = 400;
-  uint256 public maxMintAmount = 5;
-  uint256 public nftPerAddressLimit = 3;
+  uint256 public maxMintAmount = "";
+  uint256 public nftPerAddressLimit = "";
   bool public paused = true;
   bool public revealed = false;
   bool public onlyWhitelisted = true;
